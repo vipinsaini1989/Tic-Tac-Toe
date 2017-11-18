@@ -1,0 +1,43 @@
+.field {
+	display: none;
+	width: 25%;
+}
+.field section {
+	width: 100%;
+	height: auto;
+	/*margin-top: 3%;*/
+}
+.field section div {
+	border-style: solid;
+	margin:5px;
+	height: 55px;
+	width: 24%;
+	float: left;
+	text-align: center;
+	font-size: 35px;
+}
+
+.chooseButton div{
+	height: 25px;
+	width: 50px;
+	float: left;
+	text-align: center;
+	margin-left: 15%;
+	font-size: 20px;
+	border: 1px solid black;
+	border-radius: 10px;
+}
+.chooseButton div:hover {
+	background-color: black;
+	color:white;
+	border-radius: 10px;
+}
+.chooseButton {
+	margin-left: 28%;
+}
+h3 {
+	text-align: center;
+}
+header {
+	text-align: center;
+}
