@@ -2,15 +2,15 @@
 let choice = ['x','o'];
 var placeValue ;
 var computerValue ;
+var myArr = [[0,0,0],[0,0,0],[0,0,0]];
+var row, column;
+var count =0;
+var won = false;
 //  Alloting these two for displaying none and showing the as the block;
 var battleField = document.getElementById('fieldId');
 var chooseField = document.getElementById('queryButton');
-var myArr=[];
-var compArr=[];
-let condition1 = [0,0,0,0,0,0,0,0,0];	
 var divCollect=document.querySelectorAll('.tile');
-var x = Math.floor((Math.random() * 9));
-console.log (x);
+
 
 // choosing the value of our player; 
 document.getElementById('choice').addEventListener('click', function(e){
@@ -30,112 +30,114 @@ document.getElementById('choice').addEventListener('click', function(e){
 	});
 // Alloting the value to the div;
 document.getElementById('fieldId').addEventListener('click', function(e){
-	var y = Number(e.path[0].title);
-
-	myArr.push(y);
-	e.target.innerHTML = placeValue;
-	condition1[y] = 1;
-	checkpost();
-		// smartMove();
-	// conditionCheck();
-	console.log (compArr,myArr);
+	document.querySelector('.resetBtn').style.display = 'block';
+	row = Number((e.target.id).split('')[0]);
+ 	column = Number((e.target.id).split('')[1]);
+ 	if(e.target.innerHTML == 0){
+		e.target.innerHTML = placeValue;
+		myArr[row][column] = e.target.innerText;
+ 		count++;
+ 		if (!won){
+				winningCondition();
+			}
+			if (count < 9){
+ 				count++
+				setTimeout(compArray,700);
+			}
+ 	}
 
 });
-checkpost = ()=>{
-	if(myArr.length>2 || compArr.length>2){
-		declareWinner();
-		smartMove();
-	}
-	// else if(myArr.length>1 || compArr.length>1){
-	// 	smartMove();
-	// }
-	else {
-		conditionCheck();
-	}
-};
 
-declareWinner = ()=> {
-	var winningCombinations = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-		winningCombinations.sort();
-		myArr.sort();
-		compArr.sort();
-		
-		winningCombinations.filter((val)=>{
-		for (let i = 0; i<3;i++){
-			if(myArr[i] === val[i]){
-				return(document.getElementById('winAnounce').innerText= 'You win');
+var compArray = ()=>{
+		var rndm1 = Math.floor(Math.random() * 3);
+		var rndm2 = Math.floor(Math.random()* 3);
+
+ 		if(myArr[1][1] == 0){
+ 			myArr[1][1] = computerValue;
+ 			// count++
+ 			document.getElementById('11').innerHTML = computerValue;
+ 			// document.getElementsById('11').prop('contenteditable', false);
+ 		} 
+ 		else if (myArr[rndm1][rndm2] == 0){
+ 			myArr[rndm1][rndm2]= computerValue;
+ 			// count++
+ 			let numJoin = `${rndm1}${rndm2}`;
+ 			document.getElementById(numJoin).innerHTML = computerValue;
+ 			// document.getElementsById(numJoin).style.pointerEvents = 'none';
+ 		}
+ 		else{
+ 			compArray();
+ 		}
+ 		if (!won){
+				winningCondition();
 			}
-			 else if(compArr[i] === val[i]){
-					return(document.getElementById('winAnounce').innerText= 'Computer win');
-				}
+ 	};
+
+var winningCondition = ()=>{
+	for(var i = 0; i<3;i++){
+		var winningCount = 0;
+		for(var j=0;j<3;j++){
+			if(myArr[i][j] === placeValue){
+				winningCount +=1;
 			}
-		}
-	
-	)
-}
-
-conditionCheck = ()=>{
-		if(condition1[4] == 0) {
-			condition1[4]=1;
-			compArr.push(4);
-			return (divCollect[4].innerHTML = computerValue);
-}else if (condition1[0] == 0){
-	condition1[0]=1;
-	console.log (condition1);
-	compArr.push(0);
-	return(divCollect[0].innerText = computerValue)
-}
-else if (condition1[8] == 0){
-	condition1[8]=1;
-	console.log (condition1);
-	compArr.push(8);
-	return(divCollect[8].innerText = computerValue)
-}else if (condition1[5] == 0){
-	condition1[5]=1;
-	console.log (condition1);
-	compArr.push(5);
-	return(divCollect[5].innerText = computerValue)
-}else if (condition1[7] == 0){
-	condition1[7]=1;
-	console.log (condition1);
-	compArr.push(7);
-	return(divCollect[7].innerText = computerValue)
-}else if (condition1[1] == 0){
-	condition1[1]=1;
-	console.log (condition1);
-	compArr.push(1);
-	return(divCollect[1].innerText = computerValue)
-}else if (condition1[6] == 0){
-	condition1[6]=1;
-	console.log (condition1);
-	compArr.push(6);
-	return(divCollect[6].innerText = computerValue)
-}else if (condition1[3] == 0){
-	condition1[3]=1;
-	console.log (condition1);
-	compArr.push(3);
-	return(divCollect[3].innerText = computerValue)
-}else if (condition1[2] == 0){
-	condition1[2]=1;
-	console.log (condition1);
-	compArr.push(2);
-	return(divCollect[2].innerText = computerValue)
-}
-};
-
-smartMove = ()=>{
-	var element = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-	for (var j = 0; j<element.length; j++){
-		for(var k =0; k<3;k++){
-			var smartVar = element[j][k];
-				console.log (smartVar);
-			if(myArr[smartVar] == 0 || compArr[smartMove] == 0){
-				condition1[smartVar]=1;
-				console.log (condition1);
-				compArr.push(smartVar);
-				return(divCollect[smartVar].innerText = computerValue)
+			else if(myArr[i][j] === computerValue){
+				winningCount -=1;
 			}
 		}
+		winningAlert(winningCount);
+	}
+	for(var j = 0; j<3;j++){
+		var winningCount = 0;
+		for(var i=0;i<3;i++){
+			if(myArr[i][j] === placeValue){
+				winningCount +=1;
+			}
+			else if(myArr[i][j] === computerValue){
+				winningCount -=1;
+			}
+		}
+		winningAlert(winningCount);
+	}
+
+	var winningCount = 0;
+	for(var i = 0; i<3;i++){
+					if(myArr[i][i] === placeValue){
+				winningCount +=1;
+			}
+			else if(myArr[i][i] === computerValue){
+				winningCount -=1;
+			}
+		winningAlert(winningCount);
+	}
+	var winningCount = 0;
+	for(var i = 0,j=2; i<3;i++,j--){
+					if(myArr[i][j] === placeValue){
+				winningCount +=1;
+			}
+			else if(myArr[i][j] === computerValue){
+				winningCount -=1;
+			}
+		winningAlert(winningCount);
 	}
 };
-// winningCombinations = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+
+var winningAlert = (winningCount)=>{
+	if(winningCount == 3){
+			alert("you win");
+			won = true;
+			document.getElementById('fieldId').style.pointerEvents = 'none';
+		}
+		else if(winningCount == -3){
+			alert("computer win")
+			won = true;
+			document.getElementById('fieldId').style.pointerEvents = 'none';
+		}
+		// else if (count === 9){
+		// 	alert("It's a tie")
+		// }
+	};
+
+	var resetBtn = document.querySelector('.resetBtn');
+	resetBtn.addEventListener("click",function(){
+	location.reload();
+	});
